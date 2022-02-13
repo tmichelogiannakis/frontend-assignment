@@ -1,29 +1,44 @@
-import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { Box, CssBaseline, Typography } from '@mui/material';
-
-const theme = createTheme();
+import { ThemeProvider } from '@mui/material/styles';
+import { Box, CssBaseline } from '@mui/material';
+import { Provider } from 'react-redux';
+import theme from './theme';
+import { store } from './store';
+import Map from './components/Map/Map';
+import Actions from './components/Actions/Actions';
 
 const App = (): JSX.Element => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box
-        sx={{
-          height: '100vh',
-          textAlign: 'center',
-          backgroundColor: 'primary.light'
-        }}
-      >
-        <Typography variant="h1">Hello world</Typography>
-        <Typography>
-          Dignissimos explicabo tristique animi sed quas ipsam! Dis earum sequi
-          fusce elementum facere facilisi ducimus? Harum. Cras eaque dolorem
-          voluptate sapien? Euismod, excepteur proident? Nulla nisl enim
-          phasellus est ad, accusamus, repellat. Nascetur praesentium harum
-          irure a debitis. Officia autem leo quis quibusdam curabitur ac felis?
-          Pellentesque facilis.
-        </Typography>
-      </Box>
+      <Provider store={store}>
+        <Box
+          sx={{
+            height: '100vh',
+            position: 'relative'
+          }}
+        >
+          <Map
+            sx={{
+              height: '100%',
+              backgroundColor: 'primary.light',
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center'
+            }}
+          />
+          <Actions
+            sx={{
+              position: 'fixed',
+              padding: 4,
+              bottom: 0,
+              display: 'flex',
+              justifyContent: 'center',
+              left: 0,
+              right: 0
+            }}
+          />
+        </Box>
+      </Provider>
     </ThemeProvider>
   );
 };
