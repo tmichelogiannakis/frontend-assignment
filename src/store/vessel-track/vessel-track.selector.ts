@@ -1,4 +1,6 @@
 import { RootState } from '..';
+import VesselPosition from '../../types/vessel-position';
 
-export const selectVesselTrackValues = (state: RootState) =>
-  state['vessel-track'].value;
+export const selectVesselPositions = (
+  state: RootState
+): VesselPosition[] | undefined => state['vessel-track'].value;

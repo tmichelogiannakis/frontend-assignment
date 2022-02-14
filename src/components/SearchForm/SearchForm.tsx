@@ -12,6 +12,9 @@ import {
 } from '@mui/material';
 import { fetchVesselTrackAsync } from '../../store/vessel-track/vessel-track.slice';
 
+/**
+ * Label component, a reusable component for SearchForm component
+ */
 const Label: FC<TypographyProps<'label'>> = ({ children, ...otherProps }) => {
   const { sx, ...rest } = otherProps;
   return (
@@ -25,6 +28,10 @@ const Label: FC<TypographyProps<'label'>> = ({ children, ...otherProps }) => {
   );
 };
 
+/**
+ * SearchForm component.
+ * Select a ship and a specific period of time to fetch historical positions
+ */
 const SearchForm = (props: BoxProps): JSX.Element => {
   const dispatch = useDispatch();
 
@@ -35,6 +42,8 @@ const SearchForm = (props: BoxProps): JSX.Element => {
     defaultValues: { shipid: '211241', days: '1' }
   });
 
+  // when form is submitted
+  // trigger state change to fetch  historical positions
   const onSubmit = handleSubmit(data => {
     dispatch(fetchVesselTrackAsync(data));
   });

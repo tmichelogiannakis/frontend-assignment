@@ -19,11 +19,7 @@ const App = (): JSX.Element => {
         >
           <Map
             sx={{
-              height: '100%',
-              backgroundColor: 'primary.light',
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center'
+              height: '100%'
             }}
           />
           <Actions

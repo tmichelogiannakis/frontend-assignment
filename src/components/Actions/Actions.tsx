@@ -10,16 +10,26 @@ import {
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchForm from '../SearchForm/SearchForm';
 
+/**
+ * custom styled AccordionSummary component
+ */
 const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   boxShadow: 'none',
   paddingLeft: theme.spacing(4),
   paddingRight: theme.spacing(4)
 }));
 
+/**
+ * custom styled AccordionDetails component
+ */
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(4)
 }));
 
+/**
+ * Actions component.
+ * An expandable component to reveal the SearchForm component when expanded
+ */
 const Actions = (props: BoxProps): JSX.Element => {
   return (
     <Box {...props}>

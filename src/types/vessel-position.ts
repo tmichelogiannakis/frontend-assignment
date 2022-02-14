@@ -3,8 +3,8 @@ type VesselPosition = {
   IMO: string;
   STATUS: string;
   SPEED: string;
-  LON: string;
-  LAT: string;
+  LON: number;
+  LAT: number;
   COURSE: string;
   HEADING: string;
   TIMESTAMP: string;

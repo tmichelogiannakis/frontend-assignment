@@ -3,28 +3,24 @@ import fetchVesselTrack from './vessel-track.api';
 import VesselPosition from '../../types/vessel-position';
 
 const initialState = {
-  value: [],
+  value: undefined,
   status: 'idle',
   error: undefined
 } as {
-  value: VesselPosition[];
+  value?: VesselPosition[];
   status: 'idle' | 'loading';
-  error: unknown;
+  error?: unknown;
 };
 
 export const fetchVesselTrackAsync = createAsyncThunk(
   'vessel-track/fetch',
   async (payload: { shipid: string; days: string }) => {
     try {
-      const response = await fetchVesselTrack(payload);
-      const data = await response.json();
-      if (response.status == 200) {
-        return { data };
-      }
-      return { data: undefined, error: data };
+      const data = await fetchVesselTrack(payload);
+      return { data };
     } catch (error) {
       return {
-        error: JSON.stringify(error, Object.getOwnPropertyNames(error))
+        error: 'Something went wrong'
       };
     }
   }
@@ -39,6 +35,8 @@ export const vesselTrackSlice = createSlice({
   extraReducers: builder => {
     builder
       .addCase(fetchVesselTrackAsync.pending, state => {
+        state.value = undefined;
+        state.error = undefined;
         state.status = 'loading';
       })
       .addCase(fetchVesselTrackAsync.fulfilled, (state, action) => {
