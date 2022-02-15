@@ -32,7 +32,7 @@ const pointLayer: LayerProps = {
   source: 'vessel-point',
   type: 'symbol',
   layout: {
-    'icon-image': 'ferry-15',
+    'icon-image': 'vessel',
     'icon-rotate': ['get', 'bearing'],
     'icon-rotation-alignment': 'map',
     'icon-allow-overlap': true,
@@ -110,9 +110,22 @@ const Map = (props: BoxProps): JSX.Element => {
     }
   }, [vesselPositions, activeIndex]);
 
+  const handleMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
+    const map = e.target;
+    map.loadImage('/vessel.png', (error, image) => {
+      if (error) {
+        throw error;
+      }
+      if (!map.hasImage('vessel')) {
+        map.addImage('vessel', image as ImageBitmap, { sdf: true });
+      }
+    });
+  };
+
   return (
     <Box {...props}>
       <MapGL
+        onLoad={handleMapLoad}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         style={{ width: '100%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/streets-v9"
