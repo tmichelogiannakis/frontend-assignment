@@ -4,7 +4,10 @@ import { useSelector } from 'react-redux';
 import MapGL, { Source, Layer, LayerProps } from 'react-map-gl';
 import { Feature, Point, MultiLineString } from 'geojson';
 import * as turf from '@turf/turf';
-import { selectVesselPositions } from '../../store/vessel-track/vessel-track.selector';
+import {
+  selectVesselPositions,
+  selectActiveIndex
+} from '../../store/vessel-track/vessel-track.selector';
 
 // Default public token
 const MAPBOX_ACCESS_TOKEN =
@@ -43,6 +46,7 @@ const pointLayer: LayerProps = {
  */
 const Map = (props: BoxProps): JSX.Element => {
   const vesselPositions = useSelector(selectVesselPositions);
+  const activeIndex = useSelector(selectActiveIndex) ?? 0;
 
   // holds vessel's route
   const [route, setRoute] = useState<Feature<MultiLineString> | undefined>(
@@ -56,7 +60,7 @@ const Map = (props: BoxProps): JSX.Element => {
   // update vessel point and route
   useEffect(() => {
     if (vesselPositions) {
-      const coordinates = [vesselPositions.map(i => [i.LON, i.LAT])];
+      const coordinates = [vesselPositions?.map(i => [i.LON, i.LAT])];
       setRoute({
         id: 'vessel-route',
         type: 'Feature',
@@ -66,26 +70,45 @@ const Map = (props: BoxProps): JSX.Element => {
           coordinates
         }
       });
+    } else {
+      setRoute(undefined);
+    }
+  }, [vesselPositions]);
+
+  useEffect(() => {
+    if (vesselPositions && activeIndex) {
+      const coordinates = vesselPositions?.map(i => [i.LON, i.LAT]);
+
       setPoint({
         id: 'point',
         type: 'Feature',
         properties: {
-          // Calculate the bearing to ensure the icon is rotated to match the route
           bearing: turf.bearing(
-            turf.point(coordinates[0][0]),
-            turf.point(coordinates[0][1])
+            turf.point(
+              coordinates[
+                activeIndex < coordinates.length - 1
+                  ? activeIndex
+                  : activeIndex - 1
+              ]
+            ),
+            turf.point(
+              coordinates[
+                activeIndex < coordinates.length - 1
+                  ? activeIndex + 1
+                  : activeIndex
+              ]
+            )
           )
         },
         geometry: {
           type: 'Point',
-          coordinates: coordinates[0][0]
+          coordinates: coordinates[activeIndex]
         }
       });
     } else {
-      setRoute(undefined);
       setPoint(undefined);
     }
-  }, [vesselPositions]);
+  }, [vesselPositions, activeIndex]);
 
   return (
     <Box {...props}>

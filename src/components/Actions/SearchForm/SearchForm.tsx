@@ -10,7 +10,7 @@ import {
   Typography,
   TypographyProps
 } from '@mui/material';
-import { fetchVesselTrackAsync } from '../../store/vessel-track/vessel-track.slice';
+import { fetchVesselTrackAsync } from '../../../store/vessel-track/vessel-track.slice';
 
 /**
  * Label component, a reusable component for SearchForm component

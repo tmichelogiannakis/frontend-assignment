@@ -1,13 +1,15 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import fetchVesselTrack from './vessel-track.api';
 import VesselPosition from '../../types/vessel-position';
 
 const initialState = {
   value: undefined,
+  activeIndex: undefined,
   status: 'idle',
   error: undefined
 } as {
   value?: VesselPosition[];
+  activeIndex?: number;
   status: 'idle' | 'loading';
   error?: unknown;
 };
@@ -30,13 +32,16 @@ export const vesselTrackSlice = createSlice({
   name: 'vessel-track',
   initialState,
   reducers: {
-    //
+    updateActiveIndex: (state, action: PayloadAction<number>) => {
+      state.activeIndex = action.payload;
+    }
   },
   extraReducers: builder => {
     builder
       .addCase(fetchVesselTrackAsync.pending, state => {
         state.value = undefined;
         state.error = undefined;
+        state.activeIndex = undefined;
         state.status = 'loading';
       })
       .addCase(fetchVesselTrackAsync.fulfilled, (state, action) => {
@@ -46,5 +51,7 @@ export const vesselTrackSlice = createSlice({
       });
   }
 });
+
+export const { updateActiveIndex } = vesselTrackSlice.actions;
 
 export default vesselTrackSlice.reducer;
