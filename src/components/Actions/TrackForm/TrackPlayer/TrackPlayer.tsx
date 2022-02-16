@@ -55,7 +55,12 @@ const TrackPlayer = ({
   // and inform parent component
   useEffect(() => {
     const index = timestamps.findIndex(element => time <= element);
-    if (activeIndex !== index) {
+    // if calculated index is negative has reached the end
+    if (index < 0) {
+      setAutoplay(false);
+    }
+    // if calculated index is positive and different than active do update
+    if (index >= 0 && activeIndex !== index) {
       onActiveIndexChange(index);
     }
   }, [timestamps, time, activeIndex, onActiveIndexChange]);

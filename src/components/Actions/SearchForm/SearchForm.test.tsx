@@ -15,30 +15,23 @@ describe('SearchForm', () => {
       </Provider>
     );
 
-    // input ship
+    // search for a ship
     fireEvent.change(
       screen.getByRole('textbox', {
         name: 'Ship'
       }),
       {
-        target: { value: 'shipid' }
+        target: { value: 'BLUE' }
       }
     );
-
-    // input days
-    fireEvent.change(
-      screen.getByRole('textbox', {
-        name: 'Days'
-      }),
-      {
-        target: { value: '4' }
-      }
-    );
+    await waitFor(() => {
+      fireEvent.click(screen.getByText('BLUE STAR DELOS'));
+    });
 
     // try submit
     fireEvent.click(
       screen.getByRole('button', {
-        name: 'Track'
+        name: 'Search'
       })
     );
 

@@ -16,7 +16,7 @@ const initialState = {
 
 export const fetchVesselTrackAsync = createAsyncThunk(
   'vessel-track/fetch',
-  async (payload: { shipid: string; days: string }) => {
+  async (payload: { shipid: string; fromdate: string; todate: string }) => {
     try {
       const data = await fetchVesselTrack(payload);
       return { data };
