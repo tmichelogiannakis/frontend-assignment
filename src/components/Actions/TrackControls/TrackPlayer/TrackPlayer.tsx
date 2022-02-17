@@ -43,8 +43,10 @@ const TrackPlayer = ({
   useEffect(() => {
     if (autoplay) {
       intervalRef.current = setInterval(() => {
-        setTime(t => t + 1000);
-      }, 1000 / speed);
+        // update 1min each time
+        setTime(t => t + 1000 * 60);
+        // every second when normal speed(x60)
+      }, (1000 * 60) / speed);
     }
     return () => {
       resetTimeInterval();

@@ -19,13 +19,15 @@ describe('Map', () => {
     const store = setupStore({
       'vessel-track': {
         status: 'idle',
-        value: [
+        center: 0,
+        ShowTrack: true,
+        positions: [
           {
             COURSE: '358',
             HEADING: '19',
             IMO: '9035876',
-            LAT: 35.4905,
-            LON: 24.07608,
+            LAT: '35.4905',
+            LON: '24.07608',
             MMSI: '239672000',
             SHIP_ID: '211241',
             SPEED: '0',
@@ -36,8 +38,8 @@ describe('Map', () => {
             COURSE: '358',
             HEADING: '19',
             IMO: '9035876',
-            LAT: 35.49052,
-            LON: 24.0761,
+            LAT: '35.49052',
+            LON: '24.0761',
             MMSI: '239672000',
             SHIP_ID: '211241',
             SPEED: '0',

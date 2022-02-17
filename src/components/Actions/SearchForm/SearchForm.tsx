@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { add, formatISO9075 } from 'date-fns';
@@ -8,39 +8,26 @@ import {
   Button,
   Stack,
   TextField,
-  Typography,
-  TypographyProps,
   Autocomplete
 } from '@mui/material';
-import DateTimePicker from '@mui/lab/DateTimePicker';
-import LocalizationProvider from '@mui/lab/LocalizationProvider';
+import { DateTimePicker, LocalizationProvider } from '@mui/lab';
 import AdapterDateFns from '@mui/lab/AdapterDateFns';
-import { fetchVesselTrackAsync } from '../../../store/vessel-track/vessel-track.slice';
+import Label from '../Label/Label';
+import * as vesselTrackStore from '../../../store/vessel-track';
 import fetchVessels from '../../../fakeAPI';
 import Vessel from '../../../types/vessel';
-import zonedTimeToUtc from '../../../utils/zoned-time-to-utc ';
 
-/**
- * Label component, a reusable component for SearchForm component
- */
-const Label: FC<TypographyProps<'label'>> = ({ children, ...otherProps }) => {
-  const { sx, ...rest } = otherProps;
-  return (
-    <Typography
-      component="label"
-      sx={{ display: 'inline-block', lineHeight: 1, mb: 1, ...sx }}
-      {...rest}
-    >
-      {children}
-    </Typography>
-  );
+// remove timezoneOffset from a Date
+const withoutTimezoneOffset = (date: Date) => {
+  const timezoneOffset = date.getTimezoneOffset();
+  return add(date, { minutes: timezoneOffset });
 };
 
-const utcNow = zonedTimeToUtc(new Date());
+const utcNow = withoutTimezoneOffset(new Date());
 
 /**
  * SearchForm component.
- * Select a ship and a specific period of time to fetch historical positions
+ * Select a ship and a specific period of time to ship's historical positions
  */
 const SearchForm = (props: BoxProps): JSX.Element => {
   const dispatch = useDispatch();
@@ -56,15 +43,14 @@ const SearchForm = (props: BoxProps): JSX.Element => {
     }
   });
 
-  // when form is submitted
-  // trigger state change to fetch  historical positions
   const onSubmit = handleSubmit(data => {
     const payload = {
       shipid: data.shipid,
       fromdate: formatISO9075(data.fromdate),
       todate: formatISO9075(data.todate)
     };
-    dispatch(fetchVesselTrackAsync(payload));
+    // trigger state change to fetch ship's historical positions
+    dispatch(vesselTrackStore.fetchVesselPositionsAsync(payload));
   });
 
   // Hold options and loading state for mock autocomplete
@@ -95,7 +81,7 @@ const SearchForm = (props: BoxProps): JSX.Element => {
         autoComplete="off"
         onSubmit={onSubmit}
       >
-        <Box>
+        <Box sx={{ width: 256 }}>
           <Label htmlFor="ship">Ship</Label>
           <Controller
             name="shipid"
@@ -104,10 +90,6 @@ const SearchForm = (props: BoxProps): JSX.Element => {
               <Autocomplete
                 id="ship"
                 ref={ref}
-                sx={{ width: 240 }}
-                isOptionEqualToValue={(option, value) =>
-                  option.shipid === value.shipid
-                }
                 getOptionLabel={option => option.label}
                 options={options}
                 loading={loading}
@@ -133,7 +115,7 @@ const SearchForm = (props: BoxProps): JSX.Element => {
             control={control}
           />
         </Box>
-        <Box>
+        <Box sx={{ width: 192 }}>
           <Label htmlFor="fromdate">From</Label>
           <Controller
             name="fromdate"
@@ -162,7 +144,7 @@ const SearchForm = (props: BoxProps): JSX.Element => {
             control={control}
           />
         </Box>
-        <Box>
+        <Box sx={{ width: 192 }}>
           <Label htmlFor="todate">To</Label>
           <Controller
             name="todate"

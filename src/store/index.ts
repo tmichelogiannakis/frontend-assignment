@@ -3,7 +3,7 @@ import {
   configureStore,
   PreloadedState
 } from '@reduxjs/toolkit';
-import vesselTrackReducer from './vessel-track/vessel-track.slice';
+import vesselTrackReducer from './vessel-track';
 
 const rootReducer = combineReducers({
   'vessel-track': vesselTrackReducer

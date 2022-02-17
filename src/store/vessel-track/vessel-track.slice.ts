@@ -3,23 +3,33 @@ import fetchVesselTrack from './vessel-track.api';
 import VesselPosition from '../../types/vessel-position';
 
 const initialState = {
-  value: undefined,
-  activeIndex: undefined,
+  positions: undefined,
+  activePositionIndex: undefined,
+  center: 0,
+  ShowTrack: true,
   status: 'idle',
   error: undefined
 } as {
-  value?: VesselPosition[];
-  activeIndex?: number;
+  positions?: VesselPosition[];
+  activePositionIndex?: number;
+  center: number;
+  ShowTrack: boolean;
   status: 'idle' | 'loading';
   error?: unknown;
 };
 
-export const fetchVesselTrackAsync = createAsyncThunk(
+export const fetchVesselPositionsAsync = createAsyncThunk(
   'vessel-track/fetch',
   async (payload: { shipid: string; fromdate: string; todate: string }) => {
     try {
-      const data = await fetchVesselTrack(payload);
-      return { data };
+      const response = await fetchVesselTrack(payload);
+      const data = await response.json();
+      if (response.status != 200) {
+        throw data;
+      }
+      return {
+        data
+      };
     } catch (error) {
       return {
         error: 'Something went wrong'
@@ -32,26 +42,37 @@ export const vesselTrackSlice = createSlice({
   name: 'vessel-track',
   initialState,
   reducers: {
-    updateActiveIndex: (state, action: PayloadAction<number>) => {
-      state.activeIndex = action.payload;
+    updateActivePositionIndex: (state, action: PayloadAction<number>) => {
+      state.activePositionIndex = action.payload;
+    },
+    centerOnTrack: state => {
+      state.center += 1;
+    },
+    toogleShowTrack: state => {
+      state.ShowTrack = !state.ShowTrack;
     }
   },
   extraReducers: builder => {
     builder
-      .addCase(fetchVesselTrackAsync.pending, state => {
-        state.value = undefined;
+      .addCase(fetchVesselPositionsAsync.pending, state => {
+        state.positions = undefined;
         state.error = undefined;
-        state.activeIndex = undefined;
+        state.activePositionIndex = undefined;
         state.status = 'loading';
       })
-      .addCase(fetchVesselTrackAsync.fulfilled, (state, action) => {
+      .addCase(fetchVesselPositionsAsync.fulfilled, (state, action) => {
+        const data = action.payload?.data;
         state.status = 'idle';
-        state.value = action.payload?.data;
+        state.positions = data;
+        // if data initialize activePositionIndex and do center map
+        state.activePositionIndex = data ? 1 : undefined;
+        state.center = data ? 1 : 0;
         state.error = action.payload?.error;
       });
   }
 });
 
-export const { updateActiveIndex } = vesselTrackSlice.actions;
+export const { updateActivePositionIndex, centerOnTrack, toogleShowTrack } =
+  vesselTrackSlice.actions;
 
 export default vesselTrackSlice.reducer;

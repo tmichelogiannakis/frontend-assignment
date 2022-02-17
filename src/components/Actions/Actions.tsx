@@ -9,7 +9,7 @@ import {
 } from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import SearchForm from './SearchForm/SearchForm';
-import TrackForm from './TrackForm/TrackForm';
+import TrackControls from './TrackControls/TrackControls';
 
 /**
  * custom styled AccordionSummary component
@@ -29,7 +29,7 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 /**
  * Actions component.
- * An expandable component to reveal the SearchForm and TrackForm components when expanded
+ * An expandable component to reveal the SearchForm and TrackControls components when expanded
  */
 const Actions = (props: BoxProps): JSX.Element => {
   return (
@@ -47,7 +47,7 @@ const Actions = (props: BoxProps): JSX.Element => {
           </AccordionSummary>
           <AccordionDetails>
             <SearchForm />
-            <TrackForm sx={{ marginTop: 2 }} />
+            <TrackControls sx={{ mt: 4, pt: 4, borderTop: 1 }} />
           </AccordionDetails>
         </Accordion>
       </Box>
