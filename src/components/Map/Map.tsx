@@ -6,6 +6,7 @@ import { WebMercatorViewport } from '@math.gl/web-mercator';
 import { Feature, Point, MultiLineString } from 'geojson';
 import * as turf from '@turf/turf';
 import * as vesselTrackStore from '../../store/vessel-track';
+import MapPopup from './MapPopup/MapPopup';
 
 // Default public token
 const MAPBOX_ACCESS_TOKEN =
@@ -90,7 +91,7 @@ const Map = (props: BoxProps): JSX.Element => {
         id: 'point',
         type: 'Feature',
         properties: {
-          bearing: Number(activePossition.COURSE)
+          bearing: Number(activePossition.HEADING)
         },
         geometry: {
           type: 'Point',
@@ -175,6 +176,7 @@ const Map = (props: BoxProps): JSX.Element => {
             <Layer {...routeLayer} />
           </Source>
         )}
+        {activePossition && <MapPopup position={activePossition} />}
       </MapGL>
     </Box>
   );
