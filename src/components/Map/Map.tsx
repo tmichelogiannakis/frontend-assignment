@@ -19,8 +19,8 @@ const routeLayer: LayerProps = {
   type: 'line',
   layout: {},
   paint: {
-    'line-color': '#035CEA',
-    'line-width': 4
+    'line-color': '#ce93d8',
+    'line-width': 2
   },
   filter: ['==', '$type', 'LineString']
 };
@@ -50,28 +50,18 @@ const Map = (props: BoxProps): JSX.Element => {
     vesselTrackStore.selectActivePositionIndex
   );
   const vesselTrackCenter = useSelector(vesselTrackStore.selectCenter);
-  const vesselTrackShowTrack = useSelector(vesselTrackStore.selectShowTrack);
+  const vesselTrackShowRoute = useSelector(vesselTrackStore.selectShowRoute);
   const activePossition =
     vesselPositions && activePositionIndex
       ? vesselPositions[activePositionIndex]
       : undefined;
 
-  // holds vessel's route
-  const [route, setRoute] = useState<Feature<MultiLineString> | undefined>(
-    undefined
-  );
-
-  // holds vessel's position
-  const [point, setPoint] = useState<Feature<Point> | undefined>(undefined);
-
-  // when vesselPositions are changed
-  // update vessel point and route
-  useEffect(() => {
+  const route: Feature<MultiLineString> | undefined = useMemo(() => {
     if (vesselPositions) {
       const coordinates = [
         vesselPositions?.map(i => [Number(i.LON), Number(i.LAT)])
       ];
-      setRoute({
+      return {
         id: 'vessel-route',
         type: 'Feature',
         properties: {},
@@ -79,15 +69,13 @@ const Map = (props: BoxProps): JSX.Element => {
           type: 'MultiLineString',
           coordinates
         }
-      });
-    } else {
-      setRoute(undefined);
+      };
     }
   }, [vesselPositions]);
 
-  useEffect(() => {
+  const point: Feature<Point> | undefined = useMemo(() => {
     if (activePossition) {
-      setPoint({
+      return {
         id: 'point',
         type: 'Feature',
         properties: {
@@ -100,15 +88,16 @@ const Map = (props: BoxProps): JSX.Element => {
             Number(activePossition.LAT)
           ]
         }
-      });
-    } else {
-      setPoint(undefined);
+      };
     }
   }, [activePossition]);
 
+  // reference of MapGL
   const mapRef = useRef<MapRef>(null);
+  // reference of parent Box of MapGL
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // add custom marker
   const handleMapLoad = (e: mapboxgl.MapboxEvent<undefined>) => {
     const map = e.target;
     map.loadImage('/vessel.png', (error, image) => {
@@ -121,6 +110,7 @@ const Map = (props: BoxProps): JSX.Element => {
     });
   };
 
+  // bounds based on route MultiLineString
   const fitBounds: [[number, number], [number, number]] | undefined =
     useMemo(() => {
       if (route) {
@@ -132,6 +122,7 @@ const Map = (props: BoxProps): JSX.Element => {
       }
     }, [route]);
 
+  // when vesselTrackCenter changed value do recenter the map on route bounds
   useEffect(() => {
     if (vesselTrackCenter && fitBounds) {
       const rect = containerRef.current?.getBoundingClientRect();
@@ -141,7 +132,7 @@ const Map = (props: BoxProps): JSX.Element => {
           width,
           height
         }).fitBounds(fitBounds, {
-          padding: 40,
+          padding: 80,
           maxZoom: 16
         });
         mapRef.current?.flyTo({
@@ -158,12 +149,12 @@ const Map = (props: BoxProps): JSX.Element => {
     <Box ref={containerRef} {...props}>
       <MapGL
         initialViewState={{
-          zoom: 0
+          zoom: 1
         }}
         onLoad={handleMapLoad}
         mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
         style={{ width: '100%', height: '100%' }}
-        mapStyle="mapbox://styles/mapbox/streets-v9"
+        mapStyle="mapbox://styles/mapbox/light-v10"
         ref={mapRef}
       >
         {point && (
@@ -171,7 +162,7 @@ const Map = (props: BoxProps): JSX.Element => {
             <Layer {...pointLayer} />
           </Source>
         )}
-        {route && vesselTrackShowTrack && (
+        {route && vesselTrackShowRoute && (
           <Source id={routeLayer.id} type="geojson" data={route}>
             <Layer {...routeLayer} />
           </Source>

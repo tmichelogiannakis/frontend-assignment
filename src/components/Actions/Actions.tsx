@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import {
   Accordion,
   AccordionSummary as MuiAccordionSummary,
@@ -7,9 +8,10 @@ import {
   Typography,
   styled
 } from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import { ExpandMore as ExpandMoreIcon } from '@mui/icons-material';
 import SearchForm from './SearchForm/SearchForm';
 import TrackControls from './TrackControls/TrackControls';
+import * as vesselTrackStore from '../../store/vessel-track';
 
 /**
  * custom styled AccordionSummary component
@@ -17,14 +19,24 @@ import TrackControls from './TrackControls/TrackControls';
 const AccordionSummary = styled(MuiAccordionSummary)(({ theme }) => ({
   boxShadow: 'none',
   paddingLeft: theme.spacing(4),
-  paddingRight: theme.spacing(4)
+  paddingRight: theme.spacing(4),
+  minHeight: '0 !important',
+  '.MuiAccordionSummary-content': {
+    marginTop: theme.spacing(2),
+    marginBottom: theme.spacing(2),
+    '&.Mui-expanded': {
+      marginTop: theme.spacing(2),
+      marginBottom: theme.spacing(2)
+    }
+  }
 }));
 
 /**
  * custom styled AccordionDetails component
  */
 const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
-  padding: theme.spacing(4)
+  width: 680,
+  padding: theme.spacing(0)
 }));
 
 /**
@@ -32,6 +44,8 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
  * An expandable component to reveal the SearchForm and TrackControls components when expanded
  */
 const Actions = (props: BoxProps): JSX.Element => {
+  const showSearch = useSelector(vesselTrackStore.selectShowSearch);
+
   return (
     <Box {...props}>
       <Box sx={{ display: 'inline-block' }}>
@@ -46,8 +60,7 @@ const Actions = (props: BoxProps): JSX.Element => {
             </Typography>
           </AccordionSummary>
           <AccordionDetails>
-            <SearchForm />
-            <TrackControls sx={{ mt: 4, pt: 4, borderTop: 1 }} />
+            {showSearch ? <SearchForm /> : <TrackControls />}
           </AccordionDetails>
         </Accordion>
       </Box>

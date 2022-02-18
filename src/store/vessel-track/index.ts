@@ -2,14 +2,17 @@ export {
   selectPositions,
   selectActivePositionIndex,
   selectCenter,
-  selectShowTrack
+  selectShowRoute,
+  selectShowSearch,
+  selectSearch
 } from './vessel-track.selectors';
 
 export {
   fetchVesselPositionsAsync,
   updateActivePositionIndex,
   centerOnTrack,
-  toogleShowTrack
+  togleShowRoute,
+  showSearch
 } from './vessel-track.slice';
 
 export { default } from './vessel-track.slice';

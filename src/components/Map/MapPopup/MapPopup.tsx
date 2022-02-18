@@ -54,6 +54,7 @@ const MapPopup = ({ position }: MapPopupProps): JSX.Element => {
       latitude={Number(position.LAT)}
       anchor={popupAnchor}
       closeButton={false}
+      closeOnClick={false}
     >
       <Box>
         Status: <strong>{NavigationalStatusMap[position.STATUS]}</strong>

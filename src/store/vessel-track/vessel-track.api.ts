@@ -1,5 +1,5 @@
 const fetchVesselTrack = async (payload: {
-  shipid: string;
+  shipid: number;
   fromdate: string;
   todate: string;
 }): Promise<Response> => {

@@ -9,7 +9,12 @@ const Label: FC<TypographyProps<'label'>> = ({ children, ...otherProps }) => {
   return (
     <Typography
       component="label"
-      sx={{ display: 'inline-block', lineHeight: 1, mb: 1, ...sx }}
+      sx={{
+        display: 'inline-block',
+        lineHeight: 1,
+        minWidth: 48,
+        ...sx
+      }}
       {...rest}
     >
       {children}

@@ -1,5 +1,6 @@
 import { RootState } from '..';
 import VesselPosition from '../../types/vessel-position';
+import { VesselPositionsSearch } from '../../types/vessel-positions-search';
 
 export const selectPositions = (
   state: RootState
@@ -12,5 +13,12 @@ export const selectActivePositionIndex = (
 export const selectCenter = (state: RootState): number =>
   state['vessel-track'].center;
 
-export const selectShowTrack = (state: RootState): boolean =>
-  state['vessel-track'].ShowTrack;
+export const selectShowRoute = (state: RootState): boolean =>
+  state['vessel-track'].showRoute;
+
+export const selectShowSearch = (state: RootState): boolean =>
+  state['vessel-track'].showSearch;
+
+export const selectSearch = (
+  state: RootState
+): VesselPositionsSearch | undefined => state['vessel-track'].search;

@@ -18,9 +18,10 @@ describe('Map', () => {
   it('should render with "vessel-track" data', async () => {
     const store = setupStore({
       'vessel-track': {
+        showSearch: false,
         status: 'idle',
         center: 0,
-        ShowTrack: true,
+        showRoute: true,
         positions: [
           {
             COURSE: '358',

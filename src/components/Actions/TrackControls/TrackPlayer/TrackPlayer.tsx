@@ -85,33 +85,36 @@ const TrackPlayer = ({
   };
 
   return (
-    <Stack direction="row" spacing={4} alignItems="center" {...stackProps}>
-      {activeIndex === timestamps.length - 1 ? (
-        <IconButton
-          onClick={handleReplayClick}
-          color="primary"
-          aria-label="Replay"
-        >
-          <ReplayIcon />
-        </IconButton>
-      ) : (
-        <IconButton
-          onClick={handleAutoplayToggle}
-          color="primary"
-          aria-label={autoplay ? 'Pause' : 'Play'}
-        >
-          {autoplay ? <PauseIcon /> : <PlayArrowIcon />}
-        </IconButton>
-      )}
-      <Slider
-        value={activeIndex}
-        aria-label="slider"
-        onChange={handleSliderChange}
-        min={0}
-        max={timestamps.length - 1}
-      />
-      <DateTime timestamp={time} />
-    </Stack>
+    <>
+      {/* <DateTime timestamp={time} /> */}
+      <Stack direction="row" spacing={4} alignItems="center" {...stackProps}>
+        {activeIndex === timestamps.length - 1 ? (
+          <IconButton
+            onClick={handleReplayClick}
+            color="primary"
+            aria-label="Replay"
+          >
+            <ReplayIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            onClick={handleAutoplayToggle}
+            color="primary"
+            aria-label={autoplay ? 'Pause' : 'Play'}
+          >
+            {autoplay ? <PauseIcon /> : <PlayArrowIcon />}
+          </IconButton>
+        )}
+        <Slider
+          value={activeIndex}
+          aria-label="slider"
+          onChange={handleSliderChange}
+          min={0}
+          max={timestamps.length - 1}
+        />
+        <DateTime timestamp={time} />
+      </Stack>
+    </>
   );
 };
 
