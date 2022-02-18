@@ -9,3 +9,6 @@ dist
 
 # production
 build
+
+# misc
+.env

@@ -8,10 +8,6 @@ import * as turf from '@turf/turf';
 import * as vesselTrackStore from '../../store/vessel-track';
 import MapPopup from './MapPopup/MapPopup';
 
-// Default public token
-const MAPBOX_ACCESS_TOKEN =
-  'pk.eyJ1IjoidGhlbWljIiwiYSI6ImNrbHpqeGY2djNram4yd3FtdzI2d29vbzQifQ.cbG9JufdH2cafZsNtaR3pQ';
-
 // props for route layer
 const routeLayer: LayerProps = {
   id: 'vessel-line',
@@ -152,7 +148,7 @@ const Map = (props: BoxProps): JSX.Element => {
           zoom: 1
         }}
         onLoad={handleMapLoad}
-        mapboxAccessToken={MAPBOX_ACCESS_TOKEN}
+        mapboxAccessToken={process.env.MAPBOX_ACCESS_TOKEN}
         style={{ width: '100%', height: '100%' }}
         mapStyle="mapbox://styles/mapbox/light-v10"
         ref={mapRef}
