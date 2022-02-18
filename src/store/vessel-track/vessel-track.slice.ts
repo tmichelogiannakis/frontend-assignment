@@ -20,7 +20,7 @@ const initialState = {
   center: number;
   showRoute: boolean;
   status: 'idle' | 'loading';
-  error?: unknown;
+  error?: string;
 };
 
 export const fetchVesselPositionsAsync = createAsyncThunk(
@@ -71,6 +71,9 @@ export const vesselTrackSlice = createSlice({
       state.positions = undefined;
       state.activePositionIndex = undefined;
       state.center = 0;
+    },
+    clearError: state => {
+      state.error = undefined;
     }
   },
   extraReducers: builder => {
@@ -100,7 +103,8 @@ export const {
   updateActivePositionIndex,
   centerOnTrack,
   togleShowRoute,
-  showSearch
+  showSearch,
+  clearError
 } = vesselTrackSlice.actions;
 
 export default vesselTrackSlice.reducer;

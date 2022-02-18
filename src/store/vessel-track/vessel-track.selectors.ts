@@ -22,3 +22,6 @@ export const selectShowSearch = (state: RootState): boolean =>
 export const selectSearch = (
   state: RootState
 ): VesselPositionsSearch | undefined => state['vessel-track'].search;
+
+export const selectError = (state: RootState): string | undefined =>
+  state['vessel-track'].error;

@@ -4,7 +4,8 @@ export {
   selectCenter,
   selectShowRoute,
   selectShowSearch,
-  selectSearch
+  selectSearch,
+  selectError
 } from './vessel-track.selectors';
 
 export {
@@ -12,7 +13,8 @@ export {
   updateActivePositionIndex,
   centerOnTrack,
   togleShowRoute,
-  showSearch
+  showSearch,
+  clearError
 } from './vessel-track.slice';
 
 export { default } from './vessel-track.slice';
