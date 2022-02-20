@@ -109,7 +109,7 @@ const SearchForm = (props: BoxProps): JSX.Element => {
                   getOptionLabel={option => option.label ?? ''}
                   options={options}
                   isOptionEqualToValue={(option, value) => {
-                    if (!getValues('ship').shipid) {
+                    if (!getValues('ship')?.shipid) {
                       return true;
                     }
                     return option.label === value.label;
